@@ -1,0 +1,7 @@
+/redis-config.yaml
+/redis-config/*
+!/redis-config/redis.conf
+
+/redis-client/
+/pki/
+

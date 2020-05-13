@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-redis
+  namespace: ambassador
+spec:
+  type: ClusterIP
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    service: custom-redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custom-redis
+  namespace: ambassador
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: custom-redis
+  template:
+    metadata:
+      labels:
+        service: custom-redis
+    spec:
+      volumes:
+      - name: config-volume
+        configMap:
+          name: redis-config
+      containers:
+      - name: redis
+        image: redis:6.0.1
+        volumeMounts:
+        - name: config-volume
+          mountPath: /mnt/redis-config
+        args:
+        - redis-server
+        - /mnt/redis-config/redis.conf
+      restartPolicy: Always

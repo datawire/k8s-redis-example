@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+cat <<EOF
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis-config
+  namespace: ambassador
+data:
+EOF
+for file in "$@"; do
+	echo "  ${file##*/}: $(base64 --wrap=0 "$file")"
+done
