@@ -29,8 +29,8 @@ spec:
     spec:
       volumes:
       - name: config-volume
-        configMap:
-          name: redis-config
+        secret:
+          secretName: redis-config
       containers:
       - name: redis
         image: redis:6.0.1
